@@ -1,18 +1,24 @@
 import axios from 'axios';
 import React, {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 
 const AddCategory = () => {
     const [category,setCategory] = useState();
+    const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post('http://localhost:3000/auth/add_category',{category})
         .then(result => {
-            console.log(result.data)
+            if(result.data.Status){
+                navigate('/dashboard/category');
+            }else{
+                alert(result.data.Error);
+            }
         })
     .catch(error => console.log(error))
     }
   return (
-    <div className='d-flex justify-content-center align-items-center vh-75'>           
+    <div className='d-flex justify-content-center align-items-center vh-50'>           
             <div className='p-3 rounded w-25 border' > 
                 <h2>Add Category</h2>
                 <form onSubmit={handleSubmit}>
